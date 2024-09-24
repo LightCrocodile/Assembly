@@ -14,11 +14,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh; /* Full viewport height */
+            flex-direction: column; /* Stack elements vertically */
         }
         .container {
             position: relative; /* Position relative for the glow effect */
             max-width: 600px; /* Limit video width */
-            margin: 0 auto;
+            margin: 20px auto; /* Margin around the container */
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Green glow effect */
         }
         video {
@@ -40,6 +41,26 @@
         .download-button:hover {
             background-color: #45a049;
         }
+        /* Styles for the file upload form */
+        .upload-form {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            text-align: center; /* Center the form */
+        }
+        .upload-form input[type="file"] {
+            margin-bottom: 10px; /* Space between input and button */
+        }
+        .upload-form button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-form button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -54,14 +75,54 @@
         <a href="document.pdf" class="download-button" id="downloadButton" download>Download PDF</a>
     </div>
 
+    <!-- File Upload Form -->
+    <div class="upload-form" id="uploadForm">
+        <h2>Upload Your PDF</h2>
+        <input type="file" id="fileInput" accept=".pdf" />
+        <button id="submitButton">Submit</button>
+    </div>
+
     <script>
         // Get the video and download button elements
         const video = document.getElementById('myVideo');
         const downloadButton = document.getElementById('downloadButton');
+        const uploadForm = document.getElementById('uploadForm');
 
         // Show download button when the video ends
         video.addEventListener('ended', () => {
             downloadButton.style.display = 'block'; // Show button
+            uploadForm.style.display = 'block'; // Show upload form
+        });
+
+        // Handle the file upload
+        document.getElementById('submitButton').addEventListener('click', () => {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                // You can replace the URL with your server endpoint
+                fetch('YOUR_SERVER_ENDPOINT', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('File submitted successfully!');
+                        fileInput.value = ''; // Clear the input
+                    } else {
+                        alert('File submission failed.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred during submission.');
+                });
+            } else {
+                alert('Please select a PDF file to upload.');
+            }
         });
     </script>
 </body>
