@@ -4,14 +4,65 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARG Terminal</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Video and PDF Download</title>
+    <style>
+        body {
+            background-color: black; /* Set background to black */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+        }
+        .container {
+            position: relative; /* Position relative for the glow effect */
+            max-width: 600px; /* Limit video width */
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Green glow effect */
+        }
+        video {
+            width: 100%;
+            display: block; /* Ensure video takes up full width */
+        }
+        .download-button {
+            display: none; /* Hidden by default */
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            position: absolute; /* Position the button */
+            bottom: -40px; /* Position below the video */
+            left: 50%;
+            transform: translateX(-50%); /* Center the button */
+        }
+        .download-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <div id="terminal">
-        <pre id="output">Welcome to the Assembly's Command Center.</pre>
-        <input type="text" id="input" autofocus>
+    <div class="container">
+        <!-- Video Player -->
+        <video id="myVideo" controls>
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- PDF Download Link -->
+        <a href="document.pdf" class="download-button" id="downloadButton" download>Download PDF</a>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        // Get the video and download button elements
+        const video = document.getElementById('myVideo');
+        const downloadButton = document.getElementById('downloadButton');
+
+        // Show download button when the video ends
+        video.addEventListener('ended', () => {
+            downloadButton.style.display = 'block'; // Show button
+        });
+    </script>
 </body>
 </html>
